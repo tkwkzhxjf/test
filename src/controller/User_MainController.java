@@ -50,11 +50,14 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -63,9 +66,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -76,6 +81,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import model.Book;
+import model.Member;
+import model.Notice;
 import model.RequestBook;
 
 public class User_MainController implements Initializable {
@@ -103,6 +110,9 @@ public class User_MainController implements Initializable {
 	Date time = new Date();
 	String BookApplytime = format1.format(time);
 	ArrayList<Book> bookList;
+	private ObservableList<Notice> obsList = FXCollections.observableArrayList();
+	private ObservableList<Member> obsList2;
+	private int tableViewselectedIndex;
 
 	// String selectFileName;
 	public User_MainController() {
@@ -127,11 +137,13 @@ public class User_MainController implements Initializable {
 
 		// 공지사항
 		btnNotice.setOnAction(event -> handlerBtnNotice(event));
+		
 		// 자료신청
 		btnBookApply.setOnAction(event -> handlerBtnBookApply(event));
 
 	}
 
+	
 	private void setReturnRentalBook() {
 		try {
 			BookDAO dao = new BookDAO();
@@ -244,6 +256,7 @@ public class User_MainController implements Initializable {
 		}
 	}
 
+	// 자료검색
 	private void handlerBtnBookSearch(ActionEvent event) {
 
 		Parent mainView = null;
@@ -304,10 +317,10 @@ public class User_MainController implements Initializable {
 				if (txtPass.getText().equals(memberDao.m.getPass())) {
 					userModifyStage.close();
 					try {
-						Parent userModifyView2 = FXMLLoader
-								.load(getClass().getResource("/view/user_changingInformation2.fxml"));
+						Parent userModifyView2 = FXMLLoader.load(getClass().getResource("/view/user_changingInformation2.fxml"));
 						Scene scene1 = new Scene(userModifyView2);
 						Stage userModifyStage2 = new Stage(StageStyle.UTILITY);
+						
 						Label lblId2 = (Label) scene1.lookup("#lblId");
 						Label lblBirth2 = (Label) scene1.lookup("#lblBirth");
 						Label lbPhone2 = (Label) scene1.lookup("#lbPhone");
@@ -317,6 +330,8 @@ public class User_MainController implements Initializable {
 						//TextField txtPhoneNumber2=(TextField) scene1.lookup("txtPhoneNumber");
 						ImageView imgView = (ImageView) scene1.lookup("#imgView");
 						Button btnModifyNo2 = (Button) scene1.lookup("#btnNo");
+						Button btnModifyAdd2 = (Button) scene1.lookup("#btnAdd");
+						
 						imgView.setImage(new Image("file:/C:/images/Library_MemberData/" + memberDao.m.getFileimg()));
 						lblId2.setText(memberDao.m.getId());
 						lblBirth2.setText(memberDao.m.getBirth());
@@ -324,6 +339,45 @@ public class User_MainController implements Initializable {
 						txtName2.setText(memberDao.m.getName());
 						lbPhone2.setText(memberDao.m.getPhoneNumber());
 						//txtPhoneNumber2.setText(memberDao.m.getPhoneNumber());
+						
+						btnModifyAdd2.setOnAction(event2 -> {
+							//Member m = new Member(txtName2.getText(), txtPass2.getText());
+							Connection con = null;
+							PreparedStatement pstmt = null;
+							try {
+								con = DBUtil.getConnection();
+							
+								String query = "update memberTBL set name = ? ,pass = ? where id = ?";
+								
+								pstmt = con.prepareStatement(query);
+								
+								pstmt.setString(1, txtName2.getText());
+								pstmt.setString(2, txtPass2.getText());
+								pstmt.setString(3, memberDao.m.getId());
+								
+								int userModify = pstmt.executeUpdate();
+								
+								if(userModify != 0) {
+									memberDao.m.setName(txtName2.getText());
+									memberDao.m.setPass(txtPass2.getText());
+								
+									Alert alert =new Alert(AlertType.INFORMATION);
+									alert.setTitle("계정관리");
+									alert.setHeaderText("회원정보 수정이 완료되었습니다");
+									alert.showAndWait();
+									userModifyStage2.close();
+								}else {
+									throw new Exception();
+								}
+							} catch (Exception e) {
+								Alert alert =new Alert(AlertType.ERROR);
+								alert.setTitle("에러발생");
+								alert.setHeaderText("수정창 점검");
+								alert.setContentText(e.getMessage());
+								alert.showAndWait();
+							}
+						});
+						
 						userModifyStage2.initModality(Modality.WINDOW_MODAL);
 						userModifyStage2.initOwner(stage);
 						userModifyStage2.setScene(scene1);
@@ -397,6 +451,66 @@ public class User_MainController implements Initializable {
 
 			TableView tblUserNotice = (TableView) scene.lookup("#tblNotice");
 			Button btnUserNoticeNo = (Button) scene.lookup("#btnNo");
+			Button btnUserNoticeAdd = (Button) scene.lookup("#btnAdd");
+			Button btnUserNoticeDelete = (Button) scene.lookup("#btnDelete");
+			
+			TableColumn colNo = new TableColumn("No");
+			colNo.setMaxWidth(30);
+			colNo.setStyle("-fx-allignment: CENTER");
+			colNo.setCellValueFactory(new PropertyValueFactory("no"));
+
+			TableColumn colTitle = new TableColumn("제 목");
+			colTitle.setPrefWidth(90);
+			colTitle.setStyle("-fx-allignment: CENTER");
+			colTitle.setCellValueFactory(new PropertyValueFactory("title"));
+
+			TableColumn colContent = new TableColumn("내 용");
+			colContent.setPrefWidth(400);
+			colContent.setStyle("-fx-allignment: CENTER");
+			colContent.setCellValueFactory(new PropertyValueFactory("content"));
+
+			TableColumn colDate = new TableColumn("작성날짜");
+			colDate.setPrefWidth(115);
+			colDate.setStyle("-fx-allignment: CENTER");
+			colDate.setCellValueFactory(new PropertyValueFactory("date"));
+
+			tblUserNotice.getColumns().addAll(colNo, colTitle, colContent, colDate);
+			tblUserNotice.setItems(obsList);
+			
+			Connection con = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			try {
+				con = DBUtil.getConnection();
+
+				String query = "select * from noticeTBL";
+
+				pstmt = con.prepareStatement(query);
+
+				rs = pstmt.executeQuery();
+
+				ArrayList<Notice> arrayList = new ArrayList<Notice>();
+				while (rs.next()) {
+					Notice notice = new Notice(rs.getString("title"),
+							rs.getString("content"),
+							rs.getString("date"),
+							rs.getInt("No"));
+					arrayList.add(notice);
+				}
+
+				for (int i = 0; i < arrayList.size(); i++) {
+					Notice n = arrayList.get(i);
+					obsList.add(n);
+				}
+
+			} catch (Exception e1) {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("에러발생");
+				alert.setHeaderText("DB 점검하세요");
+				alert.setContentText(e1.getMessage());
+				alert.showAndWait();
+			}
+			
 			userNoticeStage.initModality(Modality.WINDOW_MODAL);
 			userNoticeStage.initOwner(stage);
 			userNoticeStage.setScene(scene);
@@ -404,6 +518,11 @@ public class User_MainController implements Initializable {
 			userNoticeStage.setTitle("공지사항");
 			userNoticeStage.show();
 			btnUserNoticeNo.setOnAction(event1 -> userNoticeStage.close());
+			
+			btnUserNoticeAdd.setVisible(false);
+			btnUserNoticeAdd.setDisable(true);
+			btnUserNoticeDelete.setVisible(false);
+			btnUserNoticeDelete.setDisable(true);
 		} catch (IOException e) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("에러발생");

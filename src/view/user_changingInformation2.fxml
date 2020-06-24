@@ -68,11 +68,10 @@
                               <Font size="15.0" />
                            </font>
                            <padding>
-                              <Insets right="7.0" />
+                              <Insets right="8.0" />
                            </padding>
                         </Label>
-                        <TextField id="txtPhoneNumber" />
-                        <Label id="lbPhone" text="Label" />
+                        <Label id="lbPhone" text="전화번호 나올자리" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT">
