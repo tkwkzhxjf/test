@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" spacing="30.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminController">
+   <children>
+      <Label prefHeight="89.0" prefWidth="326.0" text="관리자 메뉴" textAlignment="RIGHT">
+         <font>
+            <Font name="Arial Black" size="60.0" />
+         </font>
+      </Label>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <ImageView fitHeight="150.0" fitWidth="149.0" pickOnBounds="true" preserveRatio="true" />
+            <VBox alignment="CENTER" prefHeight="100.0" prefWidth="100.0" spacing="20.0">
+               <children>
+                  <Button fx:id="btnLogout" mnemonicParsing="false" text="로그아웃" />
+                  <Button fx:id="btnManagement" mnemonicParsing="false" text="관리메뉴" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Label prefHeight="89.0" prefWidth="332.0" text="공지사항" textAlignment="RIGHT">
+               <font>
+                  <Font name="Arial Black" size="60.0" />
+               </font>
+            </Label>
+            <Button fx:id="btnNotice" mnemonicParsing="false" text="공지사항 전체보기" />
+         </children>
+      </HBox>
+      <Button fx:id="btnSchedule" mnemonicParsing="false" text="일정 전체보기" />
+      <Button fx:id="btnAd" mnemonicParsing="false" text="광고, 베스트셀러 설정" />
+   </children>
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
+</VBox>

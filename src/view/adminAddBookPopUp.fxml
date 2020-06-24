@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.HBox?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox alignment="CENTER" prefHeight="400.0" prefWidth="249.0" spacing="30.0">
+         <children>
+            <ImageView id="imgV" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+            <Button id="btnFileSelect" mnemonicParsing="false" text="이미지 파일 선택" />
+            <Button id="btnOk" mnemonicParsing="false" text="완료" />
+            <Button id="btnCancel" mnemonicParsing="false" text="취소" />
+         </children>
+      </VBox>
+      <VBox prefHeight="400.0" prefWidth="343.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="52.0" prefWidth="343.0" spacing="20.0">
+               <children>
+                  <Label text="ISBN : " />
+                  <TextField id="txtISBN" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="52.0" prefWidth="343.0" spacing="20.0">
+               <children>
+                  <Label text="제목 : " />
+                  <TextField id="txtTitle" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="52.0" prefWidth="343.0" spacing="20.0">
+               <children>
+                  <Label text="저자 : " />
+                  <TextField id="txtWriter" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="52.0" prefWidth="343.0" spacing="20.0">
+               <children>
+                  <Label text="장르 : " />
+                  <ComboBox id="cmbCategory" prefWidth="150.0" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="52.0" prefWidth="343.0" spacing="20.0">
+               <children>
+                  <Label text="출판사 : " />
+                  <TextField id="txtCompany" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="52.0" prefWidth="343.0" spacing="20.0">
+               <children>
+                  <Label text="출간일 : " />
+                  <TextField id="txtDate" />
+               </children>
+            </HBox>
+            <HBox alignment="TOP_CENTER" fillHeight="false" prefHeight="100.0" prefWidth="343.0" spacing="20.0">
+               <children>
+                  <Label text="책 소개 : " />
+                  <TextArea id="txaInformation" prefHeight="73.0" prefWidth="170.0" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</HBox>

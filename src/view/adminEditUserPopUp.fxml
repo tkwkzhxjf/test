@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.HBox?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox alignment="CENTER" prefHeight="400.0" prefWidth="249.0" spacing="30.0">
+         <children>
+            <ImageView id="imgV" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+            <Button id="btnFileSelect" mnemonicParsing="false" text="이미지 파일 선택" />
+            <Button id="btnOk" mnemonicParsing="false" text="완료" />
+            <Button id="btnCancel" mnemonicParsing="false" text="취소" />
+         </children>
+      </VBox>
+      <VBox prefHeight="400.0" prefWidth="343.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="52.0" prefWidth="343.0" spacing="20.0">
+               <children>
+                  <Label text="ID : " />
+                  <TextField id="txtId" disable="true" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="52.0" prefWidth="343.0" spacing="20.0">
+               <children>
+                  <Label text="이름 : " />
+                  <TextField id="txtName" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="52.0" prefWidth="343.0" spacing="20.0">
+               <children>
+                  <Label text="비밀번호 : " />
+                  <TextField id="txtPass" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="52.0" prefWidth="343.0" spacing="20.0">
+               <children>
+                  <Label text="휴대전화 : " />
+                  <TextField id="txtPhoneNumber" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="52.0" prefWidth="343.0" spacing="20.0">
+               <children>
+                  <Label text="생년월일 : " />
+                  <DatePicker id="dpBirth" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="52.0" prefWidth="343.0" spacing="20.0">
+               <children>
+                  <Label text="대여중인 책 : " />
+                  <TextField id="txtRentalBook" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="52.0" prefWidth="343.0" spacing="20.0">
+               <children>
+                  <Label text="비고 : " />
+                  <ComboBox id="cmbEtc" prefWidth="150.0" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</HBox>
