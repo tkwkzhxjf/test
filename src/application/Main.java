@@ -24,7 +24,7 @@ public class Main extends Application {
 		primaryStage.setScene(s);
 		primaryStage.setResizable(false);
 		primaryStage.getIcons().add(new Image(getClass().getResource("/image/logotest.png").toString()));
-		primaryStage.setTitle("KD Library2");
+		primaryStage.setTitle("KD Library");
 		primaryStage.show();
 		
 		

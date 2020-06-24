@@ -154,74 +154,11 @@ public class AdminManagement implements Initializable {
 
 ///////////////////////////
 	private void configureView() {
-		tabContainer.setTabMinWidth(tabWidth);
-		tabContainer.setTabMaxWidth(tabWidth);
-		tabContainer.setTabMinHeight(tabWidth);
-		tabContainer.setTabMaxHeight(tabWidth);
-		tabContainer.setRotateGraphic(true);
-		EventHandler<Event> replaceBackgroundColorHandler = event -> {
-			lastSelectedTabIndex = tabContainer.getSelectionModel().getSelectedIndex();
-			Tab currentTab = (Tab) event.getTarget();
-			if (currentTab.isSelected()) {
-				currentTab.setStyle("-fx-background-color: -fx-focus-color;");
-			} else {
-				currentTab.setStyle("-fx-background-color: -fx-accent;");
-			}
-		};
-		EventHandler<Event> logoutHandler = event -> {
-			Tab currentTab = (Tab) event.getTarget();
-			if (currentTab.isSelected()) {
-				tabContainer.getSelectionModel().select(lastSelectedTabIndex);
-				// TODO: logout action
-				// good place to show Dialog window with Yes / No question
-				System.out.println("Logging out!");
-			}
-		};
-		/*
-		 * configureTab(memberTab, "회원관리",
-		 * getClass().getResource("/images/default.jpg").toString(), memberContainer,
-		 * null, replaceBackgroundColorHandler); configureTab(bookTab, "도서관리",
-		 * getClass().getResource("/images/default.jpg").toString(), bookContainer,
-		 * null, replaceBackgroundColorHandler); configureTab(requestTab, "자료요청목록",
-		 * getClass().getResource("/images/default.jpg").toString(), null, null,
-		 * logoutHandler);
-		 */
-		memberTab.setStyle("-fx-background-color: -fx-focus-color;");
+	
+		  tabContainer.setTabMinWidth(tabWidth); tabContainer.setTabMaxWidth(tabWidth);
+		  tabContainer.setTabMinHeight(tabWidth);
+		  tabContainer.setTabMaxHeight(tabWidth); tabContainer.setRotateGraphic(true);
 	}
-
-	private void configureTab(Tab tab, String title, String iconPath, AnchorPane containerPane, URL resourceURL,
-			EventHandler<Event> onSelectionChangedEvent) {
-		double imageWidth = 40.0;
-		//ImageView imageView = new ImageView(new Image(iconPath));
-		//imageView.setFitHeight(imageWidth);
-		//imageView.setFitWidth(imageWidth);
-		//Label label = new Label(title);
-		//label.setMaxWidth(tabWidth - 20);
-		//label.setPadding(new Insets(5, 0, 0, 0));
-		//label.setStyle("-fx-text-fill: black; -fx-font-size: 8pt; -fx-font-weight: normal;");
-		//label.setTextAlignment(TextAlignment.CENTER);
-		BorderPane tabPane = new BorderPane();
-		tabPane.setRotate(90.0);
-		tabPane.setMaxWidth(tabWidth);
-		//tabPane.setCenter(imageView);
-		//tabPane.setBottom(label);
-		tab.setText("");
-		tab.setGraphic(tabPane);
-		tab.setOnSelectionChanged(onSelectionChangedEvent);
-		if (containerPane != null && resourceURL != null) {
-			try {
-				Parent contentView = FXMLLoader.load(resourceURL);
-				containerPane.getChildren().add(contentView);
-				AnchorPane.setTopAnchor(contentView, 0.0);
-				AnchorPane.setBottomAnchor(contentView, 0.0);
-				AnchorPane.setRightAnchor(contentView, 0.0);
-				AnchorPane.setLeftAnchor(contentView, 0.0);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
 ///////////////////////////
 
 	private void handleBtnRequestDeleteAction(ActionEvent e) {

@@ -6,10 +6,10 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminManagement">
+<AnchorPane prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminManagement">
    <children>
-      <Button fx:id="btnBack" layoutX="900.0" layoutY="464.0" mnemonicParsing="false" text="뒤로가기" />
-      <TabPane fx:id="tabContainer" layoutX="7.0" layoutY="14.0" prefHeight="400.0" prefWidth="966.0" tabClosingPolicy="UNAVAILABLE">
+      <Button fx:id="btnBack" layoutX="909.0" layoutY="750.0" mnemonicParsing="false" text="뒤로가기" />
+      <TabPane fx:id="tabContainer" layoutX="7.0" layoutY="14.0" prefHeight="713.0" prefWidth="966.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab fx:id="memberTab" text="회원관리">
             <content>
@@ -26,12 +26,9 @@
           </Tab>
           <Tab fx:id="bookTab" text="도서관리">
             <content>
-              <AnchorPane fx:id="bookContainer" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <AnchorPane fx:id="bookContainer" minHeight="0.0" minWidth="0.0" prefHeight="718.0" prefWidth="966.0">
                      <children>
-                        <TableView fx:id="tblBook" layoutX="14.0" layoutY="119.0" prefHeight="212.0" prefWidth="940.0" />
-                        <Button fx:id="btnBookAdd" layoutX="131.0" layoutY="344.0" mnemonicParsing="false" text="추가" />
-                        <Button fx:id="btnBookDelete" layoutX="253.0" layoutY="343.0" mnemonicParsing="false" text="삭제" />
-                        <Button fx:id="btnBookEdit" layoutX="193.0" layoutY="345.0" mnemonicParsing="false" text="수정" />
+                        <TableView fx:id="tblBook" layoutX="14.0" layoutY="119.0" prefHeight="345.0" prefWidth="940.0" />
                         <TextField fx:id="txtBookSearch" layoutX="25.0" layoutY="43.0" prefHeight="23.0" prefWidth="520.0" promptText="책 이름을 입력하세요" />
                         <Button fx:id="btnBookSearch" layoutX="576.0" layoutY="43.0" mnemonicParsing="false" text="검색" />
                      </children>
@@ -55,5 +52,8 @@
             </Tab>
         </tabs>
       </TabPane>
+      <Button fx:id="btnBookEdit" layoutX="166.0" layoutY="636.0" mnemonicParsing="false" text="수정" />
+      <Button fx:id="btnBookDelete" layoutX="226.0" layoutY="634.0" mnemonicParsing="false" text="삭제" />
+      <Button fx:id="btnBookAdd" layoutX="104.0" layoutY="635.0" mnemonicParsing="false" text="추가" />
    </children>
 </AnchorPane>
