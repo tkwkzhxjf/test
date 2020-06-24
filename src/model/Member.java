@@ -50,6 +50,8 @@ public class Member {
 		this.id = id;
 		this.pass = pass;
 	}
+	
+	
 
 	// getter , setter
 	public String getName() {
