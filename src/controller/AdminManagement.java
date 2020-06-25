@@ -114,6 +114,7 @@ public class AdminManagement implements Initializable {
 	private String localUrl;
 	private Image localImage;
 	private String selectFileName;
+	BookDAO dao = new BookDAO();
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -149,7 +150,7 @@ public class AdminManagement implements Initializable {
 		// 관리페이지 뒤로가기
 		btnBack.setOnAction(e -> handleBtnBackAction(e));
 
-		configureView();
+		//configureView();
 	}
 
 ///////////////////////////
@@ -439,12 +440,12 @@ public class AdminManagement implements Initializable {
 			TextArea txaInformation = (TextArea) root.lookup("#txaInformation");
 			ImageView imgV = (ImageView) root.lookup("#imgV");
 			btnCancel.setOnAction(eve -> addPopup.close());
-			cmbCategory.setItems(FXCollections.observableArrayList("로맨스", "만화", "소설"));
+			cmbCategory.setItems(dao.categoryList);
 
 			Book book0 = obLBook.get(bookTableSelectIndex);
-			selectFileName = book0.getFileimg();
+			selectFileName = book0.getFileimg().trim();
 			localUrl = "file:/C:/images/Library_BookData/" + selectFileName;
-			localImage = new Image(localUrl, false);
+			localImage = new Image(localUrl);
 			imgV.setImage(localImage);
 			txtISBN.setText(book0.getIsbn());
 			txtISBN.setDisable(true);
@@ -579,7 +580,7 @@ public class AdminManagement implements Initializable {
 			TextField txtDate = (TextField) s.lookup("#txtDate");
 			TextArea txaInformation = (TextArea) s.lookup("#txaInformation");
 			ImageView imgV = (ImageView) s.lookup("#imgV");
-			cmbCategory.setItems(FXCollections.observableArrayList("로맨스", "만화"));
+			cmbCategory.setItems(dao.categoryList);
 
 			btnFileSelect.setOnAction(eve1 -> {
 				Image image = handleBtnImageFileAction(addPopup);
@@ -676,7 +677,7 @@ public class AdminManagement implements Initializable {
 
 	// 도서 테이블 검색 버튼 이벤트
 	private void handleBtnBookSearchAction(ActionEvent e) {
-		BookDAO dao = new BookDAO();
+		
 		ArrayList<Book> arrayList = dao.searchBook(txtBookSearch.getText(), "title");
 		obLBook.clear();
 		for (Book b : arrayList) {
@@ -813,7 +814,7 @@ public class AdminManagement implements Initializable {
 					TextField txtDate = (TextField) s.lookup("#txtDate");
 					TextArea txaInformation = (TextArea) s.lookup("#txaInformation");
 					ImageView imgV = (ImageView) s.lookup("#imgV");
-					cmbCategory.setItems(FXCollections.observableArrayList("로맨스", "만화"));
+					cmbCategory.setItems(dao.categoryList);
 
 					btnFileSelect.setOnAction(eve1 -> {
 						Image image = handleBtnImageFileAction(addPopup);

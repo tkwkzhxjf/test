@@ -7,10 +7,10 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminManagement">
+<AnchorPane prefHeight="750.0" prefWidth="970.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminManagement">
    <children>
-      <Button fx:id="btnBack" layoutX="909.0" layoutY="750.0" mnemonicParsing="false" text="뒤로가기" />
-      <TabPane fx:id="tabContainer" layoutX="7.0" layoutY="14.0" prefHeight="713.0" prefWidth="966.0" tabClosingPolicy="UNAVAILABLE">
+      <Button fx:id="btnBack" layoutX="889.0" layoutY="698.0" mnemonicParsing="false" text="뒤로가기" />
+      <TabPane fx:id="tabContainer" layoutX="7.0" layoutY="14.0" prefHeight="672.0" prefWidth="966.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab fx:id="memberTab" text="회원관리">
             <content>
@@ -41,10 +41,10 @@
           </Tab>
             <Tab fx:id="requestTab" text="자료신청목록">
                <content>
-                  <AnchorPane fx:id="requestContainer" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <AnchorPane fx:id="requestContainer" minHeight="0.0" minWidth="0.0" prefHeight="653.0" prefWidth="966.0">
                      <children>
                         <TableView fx:id="tblRequest" layoutX="10.0" layoutY="55.0" prefHeight="500.0" prefWidth="940.0" />
-                        <Button fx:id="btnRequestDelete" layoutX="900.0" layoutY="600.0" mnemonicParsing="false" text="삭제" />
+                        <Button fx:id="btnRequestDelete" layoutX="904.0" layoutY="600.0" mnemonicParsing="false" text="삭제" />
                      </children>
                   </AnchorPane>
                </content>

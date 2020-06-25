@@ -152,8 +152,8 @@ public class RootController implements Initializable {
 								} catch (Exception e) {
 									Alert alert = new Alert(AlertType.ERROR);
 									alert.setTitle("에러발생");
-									alert.setHeaderText("삽입실패");
-									alert.setContentText(e.getMessage());
+									alert.setHeaderText("이미 존재하는 아이디입니다.");
+									alert.setContentText("다른 아이디를 입력하세요.");
 									alert.showAndWait();
 								}
 							} catch (Exception e) {

@@ -6,11 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import model.Book;
 
 public class BookDAO {
+	public static ObservableList<String> categoryList=FXCollections.observableArrayList("로맨스", "만화", "소설");
 
 	// 도서 테이블 전체보기
 	public ArrayList<Book> getBookTbl() {

@@ -15,12 +15,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
@@ -78,13 +77,14 @@ public class User_BookSearchController implements Initializable {
 	private String localUrl;
 	private int bookCount;
 	private int selectBook = -1;
+	BookDAO dao = new BookDAO();
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 
 		listV.setOnMousePressed(e -> listViewSelectIndexSetMethod());
 		listV.setOnMouseClicked(e -> getCartegoryBook());
-		listV.setItems(FXCollections.observableArrayList("로맨스", "만화"));
+		listV.setItems(dao.categoryList);
 		btnBack.setOnAction(e -> handleBtnBackAction(e));
 		getBookSelectMethod();
 	}
@@ -162,7 +162,7 @@ public class User_BookSearchController implements Initializable {
 			Label lbWriter = (Label) scene.lookup("#lbWriter");
 			Label lbCompany = (Label) scene.lookup("#lbCompany");
 			Label lbDate = (Label) scene.lookup("#lbDate");
-			Label lbInformation = (Label) scene.lookup("#lbInformation");
+			TextArea txaInformation = (TextArea) scene.lookup("#txaInformation");
 			Button btnClose = (Button) scene.lookup("#btnClose");
 			Button btnRental = (Button) scene.lookup("#btnRental");
 			ImageView imgV = (ImageView) scene.lookup("#imgV");
@@ -171,7 +171,7 @@ public class User_BookSearchController implements Initializable {
 			lbWriter.setText(b.getWriter());
 			lbCompany.setText(b.getCompany());
 			lbDate.setText(b.getDate());
-			lbInformation.setText(b.getInformation());
+			txaInformation.setText(b.getInformation());
 			selectFileName = b.getFileimg();
 			localUrl = "file:/C:/images/Library_BookData/" + selectFileName;
 			imgV.setImage(new Image(localUrl));
@@ -185,7 +185,7 @@ public class User_BookSearchController implements Initializable {
 			btnRental.setOnAction(e -> {
 				MemberDAO dao = new MemberDAO();
 				if (!(b.isRental())) {
-					if (dao.m.getRentalBook()==null) {
+					if (dao.m.getRentalBook() == null) {
 						Connection con1 = null;
 						PreparedStatement preparedStatement1 = null;
 						PreparedStatement preparedStatement2 = null;

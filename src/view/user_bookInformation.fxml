@@ -10,6 +10,7 @@
 
 <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
+      <VBox id="vbox" prefHeight="320.0" prefWidth="29.0" />
       <VBox prefHeight="202.0" prefWidth="146.0">
          <children>
             <StackPane alignment="BOTTOM_RIGHT" prefHeight="150.0" prefWidth="200.0">
@@ -38,7 +39,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="44.0" prefWidth="336.0">
                <children>
-                  <Label id="lbTitle" prefHeight="15.0" prefWidth="101.0" text="Label">
+                  <Label id="lbTitle" prefHeight="34.0" prefWidth="292.0" text="Label">
                      <font>
                         <Font size="28.0" />
                      </font>
@@ -47,25 +48,28 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" prefWidth="336.0">
                <children>
-                  <Label text="ISBN : " />
+                  <Label prefWidth="50.0" text="ISBN     ">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin></Label>
                   <Label id="lbISBN" prefHeight="15.0" prefWidth="101.0" text="Label" />
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefWidth="336.0">
                <children>
-                  <Label text="저자 : " />
+                  <Label prefWidth="50.0" text="저자      " />
                   <Label id="lbWriter" prefHeight="15.0" prefWidth="101.0" text="Label" />
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefWidth="336.0">
                <children>
-                  <Label text="출판사 : " />
+                  <Label prefWidth="50.0" text="출판사  " />
                   <Label id="lbCompany" prefHeight="15.0" prefWidth="101.0" text="Label" />
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefWidth="336.0">
                <children>
-                  <Label text="발행 : " />
+                  <Label prefWidth="50.0" text="발행  " />
                   <Label id="lbDate" prefHeight="15.0" prefWidth="101.0" text="Label" />
                </children>
             </HBox>
@@ -76,7 +80,7 @@
             </Separator>
             <HBox alignment="CENTER" prefHeight="148.0" prefWidth="302.0">
                <children>
-                  <Label id="lbInformation" prefHeight="148.0" prefWidth="278.0" />
+                  <TextArea id="txaInformation" editable="false" prefHeight="148.0" prefWidth="304.0" />
                </children>
             </HBox>
             <HBox alignment="BOTTOM_RIGHT" prefHeight="19.0" prefWidth="300.0" spacing="30.0">

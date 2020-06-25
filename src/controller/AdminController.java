@@ -1,14 +1,9 @@
 package controller;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -17,22 +12,21 @@ import java.util.ResourceBundle;
 
 import com.sun.javafx.scene.control.skin.DatePickerSkin;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -40,13 +34,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import model.Book;
+import javafx.util.Callback;
 import model.Notice;
-import model.RequestBook;
 import model.Schedule;
 
 public class AdminController implements Initializable {
@@ -61,13 +54,15 @@ public class AdminController implements Initializable {
 	Button btnSchedule;
 	@FXML
 	Button btnAd;
-
+	ArrayList<Schedule> schduleList = new ArrayList<Schedule>();
 	private ObservableList<Notice> obsList = FXCollections.observableArrayList();
+	ArrayList<Notice> arrayList = null;
 	private int tableViewselectedIndex;
 	SimpleDateFormat format2 = new SimpleDateFormat("yyyy년 MM월 dd일");
 	Date time = new Date();
 	String Noticetime = format2.format(time);
-	String date=LocalDate.now().toString();
+	String date = LocalDate.now().toString();
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// 로그아웃 버튼 : 로그인화면으로 돌아가기
@@ -160,39 +155,13 @@ public class AdminController implements Initializable {
 			colDate.setCellValueFactory(new PropertyValueFactory("date"));
 
 			tbladminNotice.getColumns().addAll(colNo, colTitle, colContent, colDate);
-			tbladminNotice.setItems(obsList);
 
-			Connection con = null;
-			PreparedStatement pstmt = null;
-			ResultSet rs = null;
-			try {
-				con = DBUtil.getConnection();
-
-				String query = "select * from noticeTBL";
-
-				pstmt = con.prepareStatement(query);
-
-				rs = pstmt.executeQuery();
-
-				ArrayList<Notice> arrayList = new ArrayList<Notice>();
-				while (rs.next()) {
-					Notice notice = new Notice(rs.getString("title"), rs.getString("content"), rs.getString("date"),
-							rs.getInt("No"));
-					arrayList.add(notice);
-				}
-
-				for (int i = 0; i < arrayList.size(); i++) {
-					Notice n = arrayList.get(i);
-					obsList.add(n);
-				}
-
-			} catch (Exception e1) {
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("에러발생");
-				alert.setHeaderText("TotalList 점검하세요");
-				alert.setContentText(e1.getMessage());
-				alert.showAndWait();
+			DAO dao = new DAO();
+			arrayList = dao.getNotice();
+			for (Notice n : arrayList) {
+				obsList.add(n);
 			}
+			tbladminNotice.setItems(obsList);
 
 			// 공지사항등록창 버튼
 			btnadminAdd.setOnAction(event -> {
@@ -235,12 +204,17 @@ public class AdminController implements Initializable {
 							int v = pstmt1.executeUpdate();
 
 							if (v != 0) {
+								obsList.clear();
 								Alert alert = new Alert(AlertType.INFORMATION);
 								alert.setTitle("알림");
 								alert.setHeaderText("공지사항 등록 완료");
 								alert.showAndWait();
 								adminNotAddStage.close();
-								obsList.add(n);
+								arrayList = dao.getNotice();
+								for (Notice n1 : arrayList) {
+									obsList.add(n1);
+								}
+								tbladminNotice.setItems(obsList);
 							} else {
 								throw new Exception();
 							}
@@ -299,7 +273,7 @@ public class AdminController implements Initializable {
 	}
 
 	private void handleBtnScheduleAction(ActionEvent e) {
-		
+
 		/*
 		 * HBox adminNoticeView=new HBox(); try { //adminNoticeView =
 		 * FXMLLoader.load(getClass().getResource("/view/calender.fxml")); Scene scene =
@@ -320,33 +294,82 @@ public class AdminController implements Initializable {
 		 * adminNoticeStage.show(); } catch (Exception eve) { // TODO Auto-generated
 		 * catch block eve.printStackTrace(); }
 		 */
-		
+
 		try {
 			HBox tab3;
 			tab3 = FXMLLoader.load(getClass().getResource("/view/calender.fxml"));
 
 			Button btnAdd = (Button) tab3.lookup("#btnAdd");
-
+			Button btnEdit = (Button) tab3.lookup("#btnEdit");
+			Button btnDelete = (Button) tab3.lookup("#btnDelete");
+			Button btnClose = (Button) tab3.lookup("#btnClose");
+			ListView listV = (ListView) tab3.lookup("#listV");
 			DatePicker datePicker = (DatePicker) tab3.lookup("#datePicker");
 			datePicker.setValue(LocalDate.now());
+			Label lbDate1 = (Label) tab3.lookup("#lbDate");
+			// lbDate1.setText(date);
 			// DatePicker datePicker = new DatePicker(LocalDate.now());
 			DatePickerSkin datePickerSkin = new DatePickerSkin(datePicker);
 			Pane popupContent = (Pane) datePickerSkin.getPopupContent();
-//			Node popupContent = datePickerSkin.getPopupContent();
-			popupContent.setPrefWidth(300);
-			tab3.getChildren().setAll(popupContent, btnAdd);
-			
-			// tab3.getChildren().setAll();
+			popupContent.setPrefWidth(250);
+			VBox vboxBtn = (VBox) tab3.lookup("#vboxBtn");
+			VBox vBoxList = (VBox) tab3.lookup("#vBoxList");
+			vBoxList.getChildren().setAll(lbDate1, listV);
+			vboxBtn.getChildren().setAll(btnAdd, btnEdit, btnDelete, btnClose);
+			tab3.getChildren().setAll(popupContent, vBoxList, vboxBtn);
 			Scene s = new Scene(tab3);
 			Stage arg0 = new Stage();
 			arg0.setResizable(false);
 			arg0.setScene(s);
 			arg0.setTitle("일정");
 			arg0.show();
-			datePicker.setOnAction(e3 -> {
-				System.out.println(datePicker.getValue());
-				date = datePicker.getValue().toString();
+			ObservableList<String> obSchdule = FXCollections.observableArrayList();
+			DAO dao = new DAO();
+			schduleList = dao.getSchedule(date);
+			if (schduleList.size() != 0) {
+				for (int i = 0; i < schduleList.size(); i++) {
+					obSchdule.add(schduleList.get(i).getContent());
+				}
+			}
+			listV.setItems(obSchdule);
 
+			//
+
+			/*
+			 * datePicker.setDayCellFactory(new Callback<DatePicker, DateCell>() {
+			 * 
+			 * @Override public DateCell call(DatePicker param) {
+			 * System.out.println(param.getValue().toString()); return null; } });
+			 */
+
+			datePicker.setOnAction(e3 -> {
+				obSchdule.clear();
+				schduleList.clear();
+				try {
+
+					date = datePicker.getValue().toString();
+
+					schduleList = dao.getSchedule(date);
+
+					if (schduleList.size() != 0) {
+						for (int i = 0; i < schduleList.size(); i++) {
+							obSchdule.add(schduleList.get(i).getContent());
+						}
+					}
+					// listV.clear();
+					listV.setItems(obSchdule);
+					/*
+					 * datePicker.setDayCellFactory(new Callback<DatePicker, DateCell>() {
+					 * 
+					 * @Override public DateCell call(DatePicker param) {
+					 * System.out.println(param.getValue().toString()); DateCell cell;
+					 * param.getAccessibleHelp(); return null; } });
+					 */
+					
+					
+					
+				} catch (Exception e31) {
+				}
 			});
 
 			btnAdd.setOnAction(eve -> {
@@ -365,19 +388,18 @@ public class AdminController implements Initializable {
 
 					lbDate.setText(date);
 					btnAdd2.setOnAction(eve2 -> {
-						Connection con = null;
+						Connection con1 = null;
 						PreparedStatement pstmt = null;
 						try {
 							if (txaContent.getText().trim().equals(""))
 								throw new Exception();
-							con = DBUtil.getConnection();
+							con1 = DBUtil.getConnection();
 							String query = "Insert into ScheduleTBL(`content`,`date`,`No`) values(?,?,null);";
-							pstmt = con.prepareStatement(query);
+							pstmt = con1.prepareStatement(query);
 
-							Schedule schedule=new Schedule(txaContent.getText(),date );
+							Schedule schedule = new Schedule(txaContent.getText(), date);
 							pstmt.setString(1, schedule.getContent());
 							pstmt.setString(2, schedule.getDate());
-
 
 							int resultValue = pstmt.executeUpdate();
 							if (resultValue != 0) {
@@ -406,6 +428,7 @@ public class AdminController implements Initializable {
 				}
 
 			});
+			btnClose.setOnAction(e3 -> arg0.close());
 
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
