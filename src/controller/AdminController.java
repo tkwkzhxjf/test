@@ -140,7 +140,11 @@ public class AdminController implements Initializable {
 
 				tbladminNotice.getColumns().addAll(colNo, colTitle, colContent, colDate);
 				tbladminNotice.setItems(obsList);
-
+				
+				tbladminNotice.setOnMouseClicked(event->{
+					tableViewselectedIndex=tbladminNotice.getSelectionModel().getSelectedIndex();
+				});
+					
 				Connection con = null;
 				PreparedStatement pstmt = null;
 				ResultSet rs = null;
@@ -252,10 +256,23 @@ public class AdminController implements Initializable {
 								Button btnAdminMfOk = (Button) scene3.lookup("#btnOk");
 								Button btnAdminMfNo = (Button) scene3.lookup("#btnNo");
 
+								btnAdminMfOk.setOnAction(event2 ->{
+									Connection con2 = null;
+									PreparedStatement pstmt2 = null;
+									try {
+										con2=DBUtil.getConnection();
+										String query = "update noticeTBL set title = ?, content = ? where No = ?";
+										pstmt2=con2.prepareStatement(query);
+										pstmt2.setString(1, txtAdminMfTitle.getText());
+										pstmt2.setString(2, txaAdminMfContent.getText());
+//										pstmt2.setString(3, );
+										
+										
+									} catch (Exception e1) {
+										
+									}
 
-
-
-
+								});
 								adminNotMfStage.setScene(scene3);
 								adminNotMfStage.setResizable(false);
 								adminNotMfStage.setTitle("공지사항 수정창");
